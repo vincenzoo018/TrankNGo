@@ -1,0 +1,130 @@
+@model TrackNGo.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Mayor Dashboard";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Mayor's Executive Dashboard</h1>
+            <p class="page-header__subtitle">Welcome, @Model.UserFullName - Hon. City Mayor</p>
+        </div>
+    </div>
+
+    <!-- Mayor Priority Stat Cards -->
+    <div class="stats-row">
+        <div class="stat-card stat-card--primary" style="border-left: 4px solid #DC2626;">
+            <div class="stat-card__number" style="color:#DC2626;">@Model.PendingSignatureCount</div>
+            <div class="stat-card__label">Pending Your Signature</div>
+            <div class="stat-card__sub">Require immediate attention</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #EA580C;">
+            <div class="stat-card__number" style="color:#EA580C;">@Model.ARTAFlaggedCount</div>
+            <div class="stat-card__label">ARTA Escalated</div>
+            <div class="stat-card__sub">Require intervention</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">@Model.ReturnedCount</div>
+            <div class="stat-card__label">Returned Documents</div>
+            <div class="stat-card__sub">For revision</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">@Model.TotalDocuments</div>
+            <div class="stat-card__label">Total Documents</div>
+            <div class="stat-card__sub">All time</div>
+        </div>
+    </div>
+
+    <!-- Executive Priority Alert -->
+    <div style="padding:0 24px;">
+        <div class="alert alert--warning" style="margin-top:20px;">
+            <strong>Executive Priority:</strong> You have @Model.PendingSignatureCount documents awaiting your signature and @Model.ARTAFlaggedCount ARTA-escalated documents requiring immediate action.
+        </div>
+    </div>
+
+    <!-- Documents Requiring Signature -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header" style="justify-content:space-between;">
+            <span class="card__title">Documents Awaiting Your Signature</span>
+            <a href="/Signature/Index?role=mayor" class="btn btn--primary btn--sm" style="text-decoration:none;">View All</a>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tracking #</th>
+                        <th>Document Type</th>
+                        <th>Submitted By</th>
+                        <th>Department</th>
+                        <th>Days Pending</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>Travel Order</td>
+                        <td>Dr. Jose Reyes</td>
+                        <td>HRMO</td>
+                        <td><span class="badge badge--danger badge--table">5 days</span></td>
+                        <td><span class="badge badge--danger badge--table">URGENT</span></td>
+                        <td>
+                            <a href="#" class="btn btn--sm btn--primary">Sign Now</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">TRK-2026-0144</a></td>
+                        <td>Purchase Request</td>
+                        <td>Maria Santos</td>
+                        <td>City Budget Office</td>
+                        <td><span class="badge badge--warning badge--table">3 days</span></td>
+                        <td><span class="badge badge--warning badge--table">HIGH</span></td>
+                        <td>
+                            <a href="#" class="btn btn--sm btn--primary">Sign Now</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ARTA Escalations -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header" style="justify-content:space-between;">
+            <span class="card__title">ARTA Escalated Documents</span>
+            <a href="/Oversight/Index?role=mayor" class="btn btn--outline btn--sm" style="text-decoration:none;">View Compliance</a>
+        </div>
+        <div class="card__body">
+            @if (Model.ARTAFlaggedCount > 0)
+            {
+                <div class="alert alert--danger">
+                    <strong>⚠️ Compliance Alert:</strong> @Model.ARTAFlaggedCount documents have exceeded ARTA processing deadlines and require your executive intervention.
+                </div>
+            }
+            else
+            {
+                <p style="color:var(--success);font-weight:600;">✓ No ARTA violations - All documents within compliance</p>
+            }
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Recent Activity</span>
+        </div>
+        <div class="card__body">
+            <ul style="list-style:none; padding:0;">
+                @foreach (var act in Model.RecentActivity)
+                {
+                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <strong>@act.TrackingNumber</strong> — @act.Action
+                        <span style="color:#888; font-size:12px; float:right;">@act.TimeAgo</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

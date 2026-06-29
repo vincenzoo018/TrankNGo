@@ -1,0 +1,50 @@
+@model TrackNGo.ViewModels.DocumentListViewModel
+@{
+    ViewData["Title"] = "All Documents - Mayor";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">All Documents</h1>
+            <p class="page-header__subtitle">Mayor - Executive document oversight</p>
+        </div>
+    </div>
+
+    <div style="padding:0 24px;">
+        <div class="alert alert--warning">
+            <strong>Executive Priority:</strong> Documents requiring your attention are highlighted below.
+        </div>
+    </div>
+
+    <div style="padding:0 24px 24px;">
+        <div class="card" style="overflow-x: auto; margin-top:16px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border-light); text-align: left;">
+                        <th style="padding: 16px 20px;">Tracking #</th>
+                        <th style="padding: 16px 20px;">Type</th>
+                        <th style="padding: 16px 20px;">Department</th>
+                        <th style="padding: 16px 20px;">Date Filed</th>
+                        <th style="padding: 16px 20px;">Status</th>
+                        <th style="padding: 16px 20px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <tr style="border-bottom: 1px solid var(--border-light);">
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=mayor">@doc.TrackingNumber</a></td>
+                            <td style="padding: 16px 20px;">@doc.DocumentType</td>
+                            <td style="padding: 16px 20px;">@doc.Department</td>
+                            <td style="padding: 16px 20px;">@doc.DateFiled.ToString("MMM dd, yyyy")</td>
+                            <td style="padding: 16px 20px;"><span class="badge badge--in-progress badge--table">@doc.StatusText</span></td>
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=mayor" class="btn btn--sm btn--primary">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

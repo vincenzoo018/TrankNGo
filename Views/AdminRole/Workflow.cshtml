@@ -1,0 +1,198 @@
+@{
+    ViewData["Title"] = "Workflow Management - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Workflow Routing Management</h1>
+            <p class="page-header__subtitle">Executive Admin - Complete workflow control and monitoring</p>
+        </div>
+        <button class="btn btn--primary btn--md" onclick="openWorkflowModal()">+ Create Workflow Rule</button>
+    </div>
+
+    <!-- Workflow Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number">15</div>
+            <div class="stat-card__label">Active Workflows</div>
+            <div class="stat-card__sub">Document types</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">45</div>
+            <div class="stat-card__label">Workflow Rules</div>
+            <div class="stat-card__sub">Total configured</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">892</div>
+            <div class="stat-card__label">Documents in Workflow</div>
+            <div class="stat-card__sub">Currently active</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--success)">98%</div>
+            <div class="stat-card__label">Completion Rate</div>
+            <div class="stat-card__sub">This month</div>
+        </div>
+    </div>
+
+    <!-- Active Workflows -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Document Type Workflows</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Document Type</th>
+                        <th>Total Steps</th>
+                        <th>Active Docs</th>
+                        <th>Avg Processing Time</th>
+                        <th>Completion Rate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Travel Order</strong></td>
+                        <td>5 steps</td>
+                        <td><span class="badge badge--in-progress badge--table">45 active</span></td>
+                        <td>3.2 days</td>
+                        <td><span class="badge badge--completed badge--table">95%</span></td>
+                        <td>
+                            <a href="#" class="view-link">Edit</a> |
+                            <a href="#" class="view-link">View Steps</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leave Application</strong></td>
+                        <td>4 steps</td>
+                        <td><span class="badge badge--in-progress badge--table">32 active</span></td>
+                        <td>2.8 days</td>
+                        <td><span class="badge badge--completed badge--table">98%</span></td>
+                        <td>
+                            <a href="#" class="view-link">Edit</a> |
+                            <a href="#" class="view-link">View Steps</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Purchase Request</strong></td>
+                        <td>7 steps</td>
+                        <td><span class="badge badge--in-progress badge--table">28 active</span></td>
+                        <td>6.5 days</td>
+                        <td><span class="badge badge--completed badge--table">92%</span></td>
+                        <td>
+                            <a href="#" class="view-link">Edit</a> |
+                            <a href="#" class="view-link">View Steps</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Research Incentive</strong></td>
+                        <td>6 steps</td>
+                        <td><span class="badge badge--in-progress badge--table">15 active</span></td>
+                        <td>5.1 days</td>
+                        <td><span class="badge badge--completed badge--table">96%</span></td>
+                        <td>
+                            <a href="#" class="view-link">Edit</a> |
+                            <a href="#" class="view-link">View Steps</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Workflow Configuration -->
+    <div class="card" style="margin-top:20px; max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">Workflow Configuration (Admin Only)</span>
+        </div>
+        <div class="card__body">
+            <div class="alert alert--info" style="margin-bottom:16px;">
+                <strong>Admin Access:</strong> Configure workflow steps, routing rules, and department assignments.
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Select Document Type</label>
+                <select class="form-select">
+                    <option>Travel Order</option>
+                    <option>Leave Application</option>
+                    <option>Purchase Request</option>
+                    <option>Research Incentive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Workflow Steps</label>
+                <div style="padding:16px; border:1px solid var(--border-gray); border-radius:8px;">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="width:32px; height:32px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">1</span>
+                        <span style="flex:1;">Document Received by Clerk</span>
+                        <button class="btn btn--sm btn--outline">Edit</button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="width:32px; height:32px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">2</span>
+                        <span style="flex:1;">Endorsed by Executive Admin</span>
+                        <button class="btn btn--sm btn--outline">Edit</button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                        <span style="width:32px; height:32px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">3</span>
+                        <span style="flex:1;">Reviewed by Department</span>
+                        <button class="btn btn--sm btn--outline">Edit</button>
+                    </div>
+                    <button class="btn btn--primary btn--sm" style="margin-top:12px;">+ Add Step</button>
+                </div>
+            </div>
+
+            <div style="margin-top:24px;">
+                <button class="btn btn--primary btn--md">Save Workflow</button>
+                <button class="btn btn--outline btn--md" style="margin-left:8px;">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow Modal -->
+<div class="modal-overlay" id="workflowModal">
+    <div class="qr-modal" style="width: 600px;">
+        <div class="qr-modal__header" style="background:#0F2A6B;">
+            <span class="qr-modal__header-title">Create Workflow Rule</span>
+            <span class="qr-modal__close" onclick="closeWorkflowModal()">&times;</span>
+        </div>
+        <div class="qr-modal__body" style="text-align:left;">
+            <div class="form-group">
+                <label class="form-label">Rule Name</label>
+                <input type="text" class="form-input" placeholder="e.g. HRMO Fast Track" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Condition</label>
+                <select class="form-select">
+                    <option>If Department = HRMO</option>
+                    <option>If Priority = High</option>
+                    <option>If Amount > 50,000</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Action</label>
+                <select class="form-select">
+                    <option>Skip Step 2</option>
+                    <option>Route to Mayor Directly</option>
+                    <option>Require Additional Approval</option>
+                </select>
+            </div>
+            <button class="btn btn--primary btn--full btn--md">Create Rule</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openWorkflowModal() {
+            document.getElementById('workflowModal').classList.add('active');
+        }
+        function closeWorkflowModal() {
+            document.getElementById('workflowModal').classList.remove('active');
+        }
+    </script>
+}

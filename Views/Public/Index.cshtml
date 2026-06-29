@@ -1,0 +1,104 @@
+@{
+    ViewData["Title"] = "Public Tracking Portal";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+
+<div class="public-tracking-hero">
+    <div class="public-tracking-hero__bg-pattern"></div>
+    <div class="public-tracking-hero__content">
+        <span class="badge badge--primary" style="margin-bottom:16px;">Citizen Portal</span>
+        <h1 class="public-tracking-hero__title">Track Your Document</h1>
+        <p class="public-tracking-hero__subtitle">Enter your reference number or scan the QR code to check the real-time status of your request at the City Mayor's Office.</p>
+        
+        <div class="public-search-box">
+            <div class="public-search-box__input-wrap">
+                <svg class="public-search-box__icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="publicRefSearch" placeholder="e.g., TNG-2026-0312" class="public-search-box__input" autocomplete="off" />
+            </div>
+            <button class="btn btn--primary btn--lg public-search-box__btn" onclick="searchPublicDoc()">Track Now</button>
+            <button class="btn btn--blue-outline btn--lg public-search-box__qr-btn" title="Scan QR Code">
+                <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="public-tracking-results" id="publicResults" style="display:none;">
+    <div class="card public-result-card">
+        <div class="card__header card__header--accent" style="justify-content:center;">
+            <span class="card__title">Document Status</span>
+        </div>
+        <div class="card__body">
+            <!-- Result Header -->
+            <div class="public-result-header">
+                <div class="public-result-header__ref" id="resRef">TNG-2026-0312</div>
+                <div class="public-result-header__type" id="resType">Research Incentive Request</div>
+                <div class="public-result-header__status">
+                    <span class="badge badge--completed badge--md" id="resStatusBadge">COMPLETED</span>
+                </div>
+            </div>
+
+            <!-- Public Stepper -->
+            <div class="public-stepper">
+                <!-- Step 1 -->
+                <div class="public-step public-step--completed">
+                    <div class="public-step__icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <div class="public-step__content">
+                        <div class="public-step__title">Submitted</div>
+                        <div class="public-step__date">May 10, 2026</div>
+                        <div class="public-step__desc">Document received by HRMO.</div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="public-step public-step--completed">
+                    <div class="public-step__icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <div class="public-step__content">
+                        <div class="public-step__title">In Processing</div>
+                        <div class="public-step__date">May 18 - 25, 2026</div>
+                        <div class="public-step__desc">Document routed through Records Division, DIC, and City Administrator.</div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="public-step public-step--active">
+                    <div class="public-step__icon"><div class="public-step__dot"></div></div>
+                    <div class="public-step__content">
+                        <div class="public-step__title">Ready for Release</div>
+                        <div class="public-step__date">May 28, 2026</div>
+                        <div class="public-step__desc">Document is completed and ready for pickup at the Mayor's Office.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="public-result-alert">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Please present your valid ID when claiming the document. If you have questions, call (087) 3883-XXX.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function searchPublicDoc() {
+            const input = document.getElementById('publicRefSearch').value.trim();
+            const results = document.getElementById('publicResults');
+            
+            if(input) {
+                // Show loading state (simulated)
+                const btn = document.querySelector('.public-search-box__btn');
+                const origText = btn.textContent;
+                btn.textContent = 'Searching...';
+                
+                setTimeout(() => {
+                    btn.textContent = origText;
+                    results.style.display = 'flex';
+                    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 600);
+            }
+        }
+
+        document.getElementById('publicRefSearch').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') searchPublicDoc();
+        });
+    </script>
+}

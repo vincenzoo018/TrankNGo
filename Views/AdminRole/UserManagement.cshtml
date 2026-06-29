@@ -1,0 +1,240 @@
+@{
+    ViewData["Title"] = "User Management - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">User Management</h1>
+            <p class="page-header__subtitle">Executive Admin - Complete user account control</p>
+        </div>
+        <button class="btn btn--primary btn--md" onclick="openUserModal()">+ Add New User</button>
+    </div>
+
+    <!-- User Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number">48</div>
+            <div class="stat-card__label">Total Users</div>
+            <div class="stat-card__sub">Active accounts</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">1</div>
+            <div class="stat-card__label">Mayors</div>
+            <div class="stat-card__sub">Executive authority</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">3</div>
+            <div class="stat-card__label">Administrators</div>
+            <div class="stat-card__sub">System admins</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">8</div>
+            <div class="stat-card__label">Records Officers</div>
+            <div class="stat-card__sub">Document handlers</div>
+        </div>
+    </div>
+
+    <!-- User List -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header" style="justify-content:space-between;">
+            <span class="card__title">System Users</span>
+            <div style="display:flex; gap:12px;">
+                <select class="form-select" style="width:150px;">
+                    <option>All Roles</option>
+                    <option>Mayor</option>
+                    <option>Executive Admin</option>
+                    <option>Records Officer</option>
+                    <option>Oversight Officer</option>
+                </select>
+                <input type="text" class="form-input" placeholder="Search users..." style="width:200px;" />
+            </div>
+        </div>
+        <div class="card__body" style="padding:0;overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Role</th>
+                        <th>Last Login</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hon. City Mayor</strong></td>
+                        <td>mayor</td>
+                        <td>mayor@trackngo.mati.gov.ph</td>
+                        <td>Office of the Mayor</td>
+                        <td><span class="badge badge--primary badge--table">Mayor</span></td>
+                        <td>2 hours ago</td>
+                        <td><span class="badge badge--completed badge--table">Active</span></td>
+                        <td>
+                            <a href="#" class="view-link" onclick="openUserModal()">Edit</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Administrator</strong></td>
+                        <td>admin</td>
+                        <td>admin@trackngo.mati.gov.ph</td>
+                        <td>Office of the Mayor</td>
+                        <td><span class="badge badge--pending badge--table" style="background:#0F2A6B;color:white;border:none;">Executive Admin</span></td>
+                        <td>Just now</td>
+                        <td><span class="badge badge--completed badge--table">Active</span></td>
+                        <td>
+                            <a href="#" class="view-link" onclick="openUserModal()">Edit</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Records Officer</strong></td>
+                        <td>records</td>
+                        <td>records@trackngo.mati.gov.ph</td>
+                        <td>Office of the Mayor</td>
+                        <td><span class="badge badge--in-progress badge--table">Records Officer</span></td>
+                        <td>1 hour ago</td>
+                        <td><span class="badge badge--completed badge--table">Active</span></td>
+                        <td>
+                            <a href="#" class="view-link" onclick="openUserModal()">Edit</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>CART Oversight Officer</strong></td>
+                        <td>oversight</td>
+                        <td>oversight@trackngo.mati.gov.ph</td>
+                        <td>Office of the Mayor</td>
+                        <td><span class="badge badge--warning badge--table" style="background:#EA580C;border-color:#EA580C;">Oversight Officer</span></td>
+                        <td>3 hours ago</td>
+                        <td><span class="badge badge--completed badge--table">Active</span></td>
+                        <td>
+                            <a href="#" class="view-link" onclick="openUserModal()">Edit</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Role Permissions Matrix -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Role Permissions Matrix</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Mayor</th>
+                        <th>Executive Admin</th>
+                        <th>Records Officer</th>
+                        <th>Oversight Officer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dashboard</strong></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Document Intake</strong></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital Signature</strong></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Management</strong></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Configuration</strong></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--success);">✓</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                        <td><span style="color:var(--text-muted);">—</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div class="modal-overlay" id="userModal">
+    <div class="qr-modal" style="width: 550px;">
+        <div class="qr-modal__header" style="background:#0F2A6B;">
+            <span class="qr-modal__header-title">Add / Edit User</span>
+            <span class="qr-modal__close" onclick="closeUserModal()">&times;</span>
+        </div>
+        <div class="qr-modal__body" style="text-align:left;">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Juan Dela Cruz" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" placeholder="e.g. juan.delacruz" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" placeholder="e.g. juan@mati.gov.ph" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Department</label>
+                <select class="form-select">
+                    <option>Office of the Mayor</option>
+                    <option>HRMO</option>
+                    <option>Records Division</option>
+                    <option>City Budget Office</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">System Role</label>
+                <select class="form-select">
+                    <option>Mayor</option>
+                    <option>Executive Admin</option>
+                    <option>Records Officer</option>
+                    <option>Oversight Officer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mobile Number (for SMS)</label>
+                <input type="tel" class="form-input" placeholder="+63 917 123 4567" />
+            </div>
+            <button class="btn btn--primary btn--full btn--md">Save User</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openUserModal() {
+            document.getElementById('userModal').classList.add('active');
+        }
+        function closeUserModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+    </script>
+}

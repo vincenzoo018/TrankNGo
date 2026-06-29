@@ -1,0 +1,128 @@
+@model TrackNGo.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Oversight Dashboard";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">CART Oversight Dashboard</h1>
+            <p class="page-header__subtitle">Welcome, @Model.UserFullName - Compliance Monitoring Officer</p>
+        </div>
+    </div>
+
+    <!-- Oversight Officer Stat Cards -->
+    <div class="stats-row">
+        <div class="stat-card" style="border-left: 4px solid #FCD34D;">
+            <div class="stat-card__number" style="color:#F59E0B;">@Model.WarningCount</div>
+            <div class="stat-card__label">Warnings</div>
+            <div class="stat-card__sub">Nearing deadline (75%+)</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #FB923C;">
+            <div class="stat-card__number" style="color:#EA580C;">@Model.CriticalCount</div>
+            <div class="stat-card__label">Critical</div>
+            <div class="stat-card__sub">Missed target (7+ days)</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #DC2626;">
+            <div class="stat-card__number" style="color:#DC2626;">@Model.OverdueCount</div>
+            <div class="stat-card__label">Overdue</div>
+            <div class="stat-card__sub">Escalated to Mayor (20+ days)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--success);">@Model.ARTAComplianceRate%</div>
+            <div class="stat-card__label">Compliance Rate</div>
+            <div class="stat-card__sub">Overall completion on time</div>
+        </div>
+    </div>
+
+    <!-- ARTA Alert -->
+    <div style="padding:0 24px;">
+        <div class="alert alert--danger" style="margin-top:20px;">
+            <strong>⚠️ ARTA Alert:</strong> Monitor @Model.CriticalCount critical violations and @Model.OverdueCount overdue documents requiring immediate action.
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Quick Actions</span>
+        </div>
+        <div class="card__body">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+                <a href="/Oversight/Index?role=oversight" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg>
+                    <span>ARTA Compliance</span>
+                </a>
+                <a href="/Oversight/Reports?role=oversight" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>Reports & Export</span>
+                </a>
+                <a href="/Admin/Index?role=oversight" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><circle cx="12" cy="8" r="4"/><path d="M3 21 C3 17 7 14 12 14 C17 14 21 17 21 21"/></svg>
+                    <span>User Management</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Escalations -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Recent ARTA Escalations</span>
+        </div>
+        <div class="card__body">
+            @if (Model.EscalationAlerts.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tracking No</th>
+                            <th>Level</th>
+                            <th>Violating Office</th>
+                            <th>Days Overdue</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var alert in Model.EscalationAlerts)
+                        {
+                            <tr>
+                                <td><strong>@alert.TrackingNumber</strong></td>
+                                <td><span class="badge badge--danger">@alert.EscalationLevel</span></td>
+                                <td>@alert.ViolatingOffice</td>
+                                <td>@alert.DaysOverdue days</td>
+                                <td><a href="/Document/ViewDocument/@alert.DocumentId?role=oversight" class="btn btn--sm btn--primary">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p style="color:var(--success);">✓ No escalations - All documents within compliance</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+            border: 2px dashed var(--border-gray);
+            border-radius: 8px;
+            color: var(--text-body);
+            transition: all 0.2s;
+        }
+        .quick-action-btn:hover {
+            border-color: #EA580C;
+            color: #EA580C;
+            background: #FFF7ED;
+        }
+    </style>
+}

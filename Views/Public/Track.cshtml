@@ -1,0 +1,107 @@
+@model TrackNGo.ViewModels.TrackingResultViewModel
+@{
+    ViewData["Title"] = "Track Document";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+
+<div style="max-width: 700px; margin: 40px auto; padding: 0 20px;">
+    <div style="text-align: center; margin-bottom: 32px;">
+        <h1 style="font-size: 24px; font-weight: 700; color: #1A56DB; margin-bottom: 8px;">TrackNGo Mati</h1>
+        <p style="color: #64748B; font-size: 13px;">Document Tracking — Office of the Mayor</p>
+    </div>
+
+    @if (Model == null || !Model.Found)
+    {
+        <!-- Search Form -->
+        <div class="card" style="padding: 32px; text-align: center;">
+            <h2 style="font-size: 18px; margin-bottom: 16px;">Track Your Document</h2>
+            <p style="color: #64748B; font-size: 13px; margin-bottom: 24px;">Enter your tracking number or scan the QR code on your document</p>
+            <form action="/Public/Track" method="get" style="display: flex; gap: 8px; max-width: 400px; margin: 0 auto;">
+                <input type="text" name="refNumber" placeholder="e.g. TNG-2026-0312"
+                       value="@(Model?.TrackingNumber ?? "")"
+                       style="flex: 1; height: 40px; border: 1px solid #E2E8F0; border-radius: 4px; padding: 0 12px; font-size: 13px;" />
+                <button type="submit" style="height: 40px; padding: 0 20px; background: #1A56DB; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">
+                    Track
+                </button>
+            </form>
+            @if (Model != null && !Model.Found && !string.IsNullOrEmpty(Model.TrackingNumber))
+            {
+                <div style="margin-top: 16px; color: #EF4444; font-size: 13px;">
+                    No document found with tracking number: @Model.TrackingNumber
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Tracking Result -->
+        <div class="card" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Tracking Number</div>
+                    <div style="font-size: 22px; font-weight: 800; color: #1A56DB; font-family: monospace;">@Model.TrackingNumber</div>
+                </div>
+                <span class="badge badge--@(Model.CurrentStatus.ToString()?.ToLower() ?? "submitted")" style="font-size: 12px; padding: 6px 16px;">
+                    @Model.CurrentStatus
+                </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; font-size: 13px;">
+                <div>
+                    <div style="color: #64748B; font-size: 11px; font-weight: 600;">Document Type</div>
+                    <div style="font-weight: 600;">@Model.DocumentType</div>
+                </div>
+                <div>
+                    <div style="color: #64748B; font-size: 11px; font-weight: 600;">Department</div>
+                    <div style="font-weight: 600;">@Model.Department</div>
+                </div>
+                <div>
+                    <div style="color: #64748B; font-size: 11px; font-weight: 600;">Date Filed</div>
+                    <div>@Model.DateFiled?.ToString("MMMM dd, yyyy")</div>
+                </div>
+                <div>
+                    <div style="color: #64748B; font-size: 11px; font-weight: 600;">Current Office</div>
+                    <div style="font-weight: 600;">@Model.CurrentOffice</div>
+                </div>
+            </div>
+
+            <!-- Step Progress -->
+            <div style="margin-bottom: 24px;">
+                <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; margin-bottom: 8px;">Processing Progress</div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    @for (int i = 1; i <= Model.TotalSteps; i++)
+                    {
+                        <div style="width: 10px; height: 10px; border-radius: 50%; background: @(i <= Model.CurrentStep ? "#1A56DB" : "#E2E8F0");"></div>
+                    }
+                    <span style="font-size: 12px; font-weight: 600; color: #475569; margin-left: 8px;">@Model.CurrentStep / @Model.TotalSteps</span>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            @if (Model.Timeline.Any())
+            {
+                <div style="border-top: 1px solid #E2E8F0; padding-top: 20px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; margin-bottom: 16px;">Processing Timeline</div>
+                    @foreach (var item in Model.Timeline)
+                    {
+                        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: @(item.IsCurrent ? "#1A56DB" : "#94A3B8"); margin-top: 5px; flex-shrink: 0;"></div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 600;">@item.Action</div>
+                                <div style="font-size: 11px; color: #64748B;">@item.Office — @item.Date.ToString("MMM dd, yyyy h:mm tt")</div>
+                                @if (!string.IsNullOrEmpty(item.Remarks))
+                                {
+                                    <div style="font-size: 11px; color: #94A3B8; font-style: italic;">@item.Remarks</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div style="text-align: center; margin-top: 16px;">
+            <a href="/Public/Track" style="color: #1A56DB; font-size: 13px; text-decoration: none;">← Track another document</a>
+        </div>
+    }
+</div>

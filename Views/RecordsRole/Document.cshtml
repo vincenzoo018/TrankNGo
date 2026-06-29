@@ -1,0 +1,57 @@
+@model TrackNGo.ViewModels.DocumentListViewModel
+@{
+    ViewData["Title"] = "My Documents - Records";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">My Documents</h1>
+            <p class="page-header__subtitle">Records Officer - Documents I created or manage</p>
+        </div>
+        <a href="/Document/Create?role=records" class="btn btn--primary btn--md" style="text-decoration:none;">
+            + Submit New Document
+        </a>
+    </div>
+
+    <div style="padding:0 24px;">
+        <div class="alert alert--info">
+            <strong>Records View:</strong> You see only documents you have created or those assigned to you.
+        </div>
+    </div>
+
+    <div style="padding:0 24px 24px;">
+        <div class="card" style="overflow-x: auto; margin-top:16px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border-light); text-align: left;">
+                        <th style="padding: 16px 20px;">Tracking #</th>
+                        <th style="padding: 16px 20px;">Document Type</th>
+                        <th style="padding: 16px 20px;">Date Filed</th>
+                        <th style="padding: 16px 20px;">Status</th>
+                        <th style="padding: 16px 20px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Documents.Any())
+                    {
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px;">No documents found.</td>
+                        </tr>
+                    }
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <tr style="border-bottom: 1px solid var(--border-light);">
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=records">@doc.TrackingNumber</a></td>
+                            <td style="padding: 16px 20px;">@doc.DocumentType</td>
+                            <td style="padding: 16px 20px;">@doc.DateFiled.ToString("MMM dd, yyyy")</td>
+                            <td style="padding: 16px 20px;"><span class="badge badge--in-progress badge--table">@doc.StatusText</span></td>
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=records" class="btn btn--sm btn--primary">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

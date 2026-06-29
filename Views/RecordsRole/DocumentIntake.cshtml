@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Document Intake - Records";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Document Intake</h1>
+            <p class="page-header__subtitle">Records Officer - Submit new documents to the system</p>
+        </div>
+    </div>
+
+    <div class="card" style="max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">Submit New Document</span>
+        </div>
+        <div class="card__body">
+            <div class="form-group">
+                <label class="form-label">Document Type</label>
+                <select class="form-select">
+                    <option>Travel Order</option>
+                    <option>Leave Application</option>
+                    <option>Purchase Request</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Document Title</label>
+                <input type="text" class="form-input" placeholder="Enter document title" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Submitted By</label>
+                <input type="text" class="form-input" placeholder="Enter submitter name" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Contact Number</label>
+                <input type="tel" class="form-input" placeholder="+63 917 123 4567" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Upload Attachment</label>
+                <input type="file" class="form-input" />
+            </div>
+            <button class="btn btn--primary btn--md">Submit Document</button>
+        </div>
+    </div>
+</div>

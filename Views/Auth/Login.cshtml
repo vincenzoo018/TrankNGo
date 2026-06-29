@@ -1,0 +1,541 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+    var errorMsg = ViewData["Error"] as string;
+    var attemptedUsername = ViewData["AttemptedUsername"] as string;
+    var hasError = !string.IsNullOrEmpty(errorMsg);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TrackNGo</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(to right, #DBEAFE 50%, #FFFFFF 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-wrapper {
+            display: flex;
+            width: 900px;
+            min-height: 520px;
+            background: #FFFFFF;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            border-radius: 6px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        /* ── Left panel ── */
+        .login-left {
+            width: 50%;
+            background-color: #1A56DB;
+            background-image: linear-gradient(rgba(26, 86, 219, 0.88), rgba(26, 86, 219, 0.88)),
+                              url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #FFFFFF;
+        }
+
+        .login-left h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin: 0 0 16px;
+            letter-spacing: 1px;
+        }
+
+        .login-left p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.88);
+            margin: 0 0 28px;
+        }
+
+        .role-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .role-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+        }
+
+        /* ── Right panel ── */
+        .login-right {
+            width: 50%;
+            padding: 40px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #FFFFFF;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-header__brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A56DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .login-header__brand svg {
+            width: 20px;
+            height: 20px;
+            stroke: #1A56DB;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .login-header__subtitle {
+            font-size: 11px;
+            color: #64748B;
+        }
+
+        .login-prompt {
+            font-size: 11px;
+            color: #94A3B8;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        /* ── Error alert ── */
+        .login-error {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-left: 4px solid #EF4444;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            animation: slideInDown 0.3s ease;
+        }
+
+        .login-error svg {
+            width: 16px;
+            height: 16px;
+            stroke: #EF4444;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .login-error-body {
+            flex: 1;
+        }
+
+        .login-error-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #B91C1C;
+            margin-bottom: 2px;
+        }
+
+        .login-error-text {
+            font-size: 11px;
+            color: #EF4444;
+            line-height: 1.5;
+        }
+
+        @@keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @@keyframes shake {
+            0%,100% { transform: translateX(0); }
+            15%      { transform: translateX(-7px); }
+            30%      { transform: translateX(7px); }
+            45%      { transform: translateX(-5px); }
+            60%      { transform: translateX(5px); }
+            75%      { transform: translateX(-3px); }
+            90%      { transform: translateX(3px); }
+        }
+
+        .shake {
+            animation: shake 0.55s ease;
+        }
+
+        /* ── Credential Attempt Indicator ── */
+        .attempt-indicator {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-left: 4px solid #F59E0B;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #92400E;
+        }
+
+        .attempt-indicator-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #92400E;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .attempt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(245,158,11,0.2);
+        }
+
+        .attempt-row:last-child { border-bottom: none; }
+
+        .attempt-label {
+            color: #B45309;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .attempt-value {
+            font-family: monospace;
+            font-size: 12px;
+            color: #78350F;
+            background: rgba(245,158,11,0.1);
+            padding: 1px 6px;
+            border-radius: 3px;
+        }
+
+        .attempt-value.masked {
+            color: #B45309;
+            letter-spacing: 2px;
+        }
+
+        .attempt-status {
+            font-size: 10px;
+            font-weight: 700;
+            color: #EF4444;
+            background: #FEE2E2;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+
+        /* ── Form ── */
+        .form-group {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 40px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 5px;
+            padding: 0 14px 0 40px;
+            font-size: 12px;
+            color: #334155;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #F8FAFC;
+        }
+
+        .form-control:focus {
+            border-color: #1A56DB;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(26,86,219,0.08);
+        }
+
+        .form-control.input-error {
+            border-color: #EF4444;
+            background: #FFF7F7;
+        }
+
+        .form-control.input-error:focus {
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            width: 16px;
+            height: 16px;
+            color: #94A3B8;
+            pointer-events: none;
+        }
+
+        .form-icon.error-icon {
+            color: #EF4444;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #64748B;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            accent-color: #1A56DB;
+        }
+
+        .forgot-pw {
+            color: #1A56DB;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 42px;
+            background: #1A56DB;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-login:hover { background: #1648C0; }
+        .btn-login:active { transform: scale(0.99); }
+
+        /* ── Footer ── */
+        .footer-left {
+            position: absolute;
+            bottom: 28px;
+            left: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-left-logo {
+            width: 38px;
+            height: 38px;
+            background: #F59E0B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            color: #111827;
+        }
+
+        .footer-left-text { font-size: 11px; color: #64748B; }
+
+        .footer-right {
+            position: absolute;
+            bottom: 28px;
+            right: 28px;
+            font-size: 11px;
+            color: #64748B;
+            text-align: right;
+            border-right: 2px solid #DBEAFE;
+            padding-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="footer-left">
+        <div class="footer-left-logo">TNG</div>
+        <div class="footer-left-text">
+            <div>Office of the Mayor</div>
+            <div style="font-weight:600;">@@TrackNGo.Mati</div>
+        </div>
+    </div>
+
+    <div class="footer-right">
+        <div>City of Mati</div>
+        <div>governance.mati@@gov.ph</div>
+    </div>
+
+    <div class="login-wrapper">
+
+        <!-- Left Side -->
+        <div class="login-left">
+            <h1>TRACKNGO</h1>
+            <p>
+                The official Document Management and Monitoring System for the
+                Office of the Mayor of Mati. Centralized tracking, ARTA compliance,
+                real-time SMS updates, and secure digital workflows — all in one platform.
+            </p>
+            <div class="role-badges">
+                <span class="role-badge">🏛️ Mayor</span>
+                <span class="role-badge">🖊️ Executive Admin</span>
+                <span class="role-badge">📋 Records Officer</span>
+                <span class="role-badge">🔒 CART (Security)</span>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="login-right">
+            <div class="login-header">
+                <div class="login-header__brand">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    TRACKNGO
+                </div>
+                <div class="login-header__subtitle">Authorized Personnel Access Only</div>
+            </div>
+
+            <div class="login-prompt">Sign in with your assigned account credentials</div>
+
+            @if (hasError)
+            {
+                <div class="login-error" id="loginError">
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <div class="login-error-body">
+                        <div class="login-error-title">Login Failed</div>
+                        <div class="login-error-text">@errorMsg</div>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(attemptedUsername))
+                {
+                    <div class="attempt-indicator">
+                        <div class="attempt-indicator-title">
+                            🔍 Credential Attempt Details
+                        </div>
+                        <div class="attempt-row">
+                            <span class="attempt-label">Username tried</span>
+                            <span class="attempt-value">@attemptedUsername</span>
+                        </div>
+                        <div class="attempt-row">
+                            <span class="attempt-label">Password</span>
+                            <span class="attempt-value masked">●●●●●●●●</span>
+                        </div>
+                        <div class="attempt-row">
+                            <span class="attempt-label">Status</span>
+                            <span class="attempt-status">❌ NOT RECOGNIZED</span>
+                        </div>
+                        <div class="attempt-row">
+                            <span class="attempt-label">Time</span>
+                            <span class="attempt-value">@DateTime.Now.ToString("hh:mm:ss tt")</span>
+                        </div>
+                    </div>
+                }
+            }
+
+            <form action="/Auth/Login" method="post" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="Username">Username</label>
+                    <svg class="form-icon @(hasError ? "error-icon" : "")"
+                         viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input type="text" id="Username"
+                           class="form-control @(hasError ? "input-error" : "")"
+                           name="Username" placeholder="Enter username" required autocomplete="username"
+                           value="@attemptedUsername" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="Password">Password</label>
+                    <svg class="form-icon @(hasError ? "error-icon" : "")"
+                         viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input type="password" id="Password"
+                           class="form-control @(hasError ? "input-error" : "")"
+                           name="Password" placeholder="Enter password" required autocomplete="current-password" />
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="RememberMe" value="true" /> Remember me
+                    </label>
+                    <a href="#" class="forgot-pw">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
+            </form>
+
+            <p style="font-size:10px;color:#94A3B8;text-align:center;margin-top:16px;">
+                🔍 Clients can track documents via QR code — no login required.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Shake the form card if there's an error on load
+        @if (hasError)
+        {
+            <text>
+            document.addEventListener('DOMContentLoaded', function () {
+                var form = document.getElementById('loginForm');
+                form.classList.add('shake');
+                form.addEventListener('animationend', function () {
+                    form.classList.remove('shake');
+                });
+            });
+            </text>
+        }
+    </script>
+
+</body>
+</html>

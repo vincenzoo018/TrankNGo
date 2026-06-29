@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "ARTA Compliance - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">ARTA Compliance Monitoring</h1>
+            <p class="page-header__subtitle">Executive Admin - Complete compliance oversight and configuration</p>
+        </div>
+    </div>
+
+    <!-- ARTA Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--success)">96%</div>
+            <div class="stat-card__label">Compliance Rate</div>
+            <div class="stat-card__sub">Within ARTA deadlines</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--warning)">12</div>
+            <div class="stat-card__label">Warnings</div>
+            <div class="stat-card__sub">Approaching deadline (75%+)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--danger)">5</div>
+            <div class="stat-card__label">Critical</div>
+            <div class="stat-card__sub">Missed target deadline</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">3.2</div>
+            <div class="stat-card__label">Avg Processing Days</div>
+            <div class="stat-card__sub">System average</div>
+        </div>
+    </div>
+
+    <!-- ARTA Thresholds Configuration -->
+    <div class="card" style="margin-top:20px; max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">ARTA Threshold Configuration (Admin Only)</span>
+        </div>
+        <div class="card__body">
+            <div class="alert alert--info" style="margin-bottom:16px;">
+                <strong>System Configuration:</strong> Set ARTA processing deadlines and escalation thresholds.
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Simple Transactions</label>
+                <input type="number" class="form-input" value="3" />
+                <p style="font-size:11px;color:#64748B;margin-top:4px;">Working days to process simple transactions</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Complex Transactions</label>
+                <input type="number" class="form-input" value="7" />
+                <p style="font-size:11px;color:#64748B;margin-top:4px;">Working days to process complex transactions</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Highly Technical Transactions</label>
+                <input type="number" class="form-input" value="20" />
+                <p style="font-size:11px;color:#64748B;margin-top:4px;">Working days to process highly technical transactions</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Warning Threshold</label>
+                <input type="number" class="form-input" value="75" />
+                <p style="font-size:11px;color:#64748B;margin-top:4px;">Percentage of deadline to trigger warning (75% = Yellow)</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Escalation Check Interval</label>
+                <select class="form-select">
+                    <option>Every Hour</option>
+                    <option selected>Every 4 Hours</option>
+                    <option>Every 8 Hours</option>
+                    <option>Once Daily</option>
+                </select>
+            </div>
+
+            <button class="btn btn--primary btn--md">Save ARTA Configuration</button>
+        </div>
+    </div>
+
+    <!-- Compliance Reports -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Department Compliance Report</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Total Documents</th>
+                        <th>On Time</th>
+                        <th>Warnings</th>
+                        <th>Violations</th>
+                        <th>Compliance %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Office of the Mayor</strong></td>
+                        <td>145</td>
+                        <td><span class="badge badge--completed badge--table">140</span></td>
+                        <td><span class="badge badge--warning badge--table">3</span></td>
+                        <td><span class="badge badge--danger badge--table">2</span></td>
+                        <td style="color:var(--success);font-weight:600;">96.5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HRMO</strong></td>
+                        <td>89</td>
+                        <td><span class="badge badge--completed badge--table">87</span></td>
+                        <td><span class="badge badge--warning badge--table">2</span></td>
+                        <td><span class="badge badge--danger badge--table">0</span></td>
+                        <td style="color:var(--success);font-weight:600;">97.8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>City Budget Office</strong></td>
+                        <td>67</td>
+                        <td><span class="badge badge--completed badge--table">60</span></td>
+                        <td><span class="badge badge--warning badge--table">5</span></td>
+                        <td><span class="badge badge--danger badge--table">2</span></td>
+                        <td style="color:var(--warning);font-weight:600;">89.6%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

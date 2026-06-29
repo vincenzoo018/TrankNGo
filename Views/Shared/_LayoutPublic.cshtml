@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TrackNGo Mati</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="public-layout">
+    <!-- Public Header -->
+    <header class="public-header">
+        <div class="public-header__container">
+            <div class="public-header__brand">
+                <div class="public-header__logo">
+                    <svg viewBox="0 0 52 52" style="width:28px;height:28px;stroke:#1A56DB;">
+                        <rect x="8" y="4" width="28" height="36" rx="3" stroke-width="1.5" fill="none"/>
+                        <line x1="14" y1="14" x2="30" y2="14" stroke-width="1.5"/>
+                        <line x1="14" y1="20" x2="30" y2="20" stroke-width="1.5"/>
+                        <line x1="14" y1="26" x2="24" y2="26" stroke-width="1.5"/>
+                        <circle cx="36" cy="34" r="10" stroke-width="1.5" fill="white"/>
+                        <polyline points="32,34 35,37 40,31" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="public-header__title">TrackNGo</div>
+                    <div class="public-header__subtitle">Mati City</div>
+                </div>
+            </div>
+            
+            <div class="public-header__actions">
+                <a href="/Auth/Login" class="btn btn--blue-outline btn--sm">Employee Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="public-main">
+        @RenderBody()
+    </main>
+
+    <!-- Public Footer -->
+    <footer class="public-footer">
+        <p>&copy; 2026 Office of the Mayor, City Government of Mati. All rights reserved.</p>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

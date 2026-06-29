@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "System Configuration - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">System Configuration</h1>
+            <p class="page-header__subtitle">Executive Admin - System-wide settings and preferences</p>
+        </div>
+    </div>
+
+    <div class="card" style="max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">General Settings</span>
+        </div>
+        <div class="card__body">
+            <div class="form-group">
+                <label class="form-label">LGU Name</label>
+                <input type="text" class="form-input" value="City Government of Mati" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">System Name</label>
+                <input type="text" class="form-input" value="TrackNGo" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Session Timeout (hours)</label>
+                <input type="number" class="form-input" value="8" />
+            </div>
+            <div class="form-group" style="display:flex;gap:12px;align-items:center;">
+                <input type="checkbox" checked style="width:16px;height:16px;" id="chkPublic" />
+                <label for="chkPublic" style="font-size:13px;font-weight:500;">Enable Public Tracking Portal</label>
+            </div>
+            <button class="btn btn--primary btn--md">Save Configuration</button>
+        </div>
+    </div>
+</div>

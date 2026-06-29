@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "QR Tracking - Records";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">QR Code Tracking</h1>
+            <p class="page-header__subtitle">Records Officer - Track and generate QR codes for my documents</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card__header">
+            <span class="card__title">My Document QR Codes</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tracking #</th>
+                        <th>Document Type</th>
+                        <th>Generated Date</th>
+                        <th>Scan Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>Travel Order</td>
+                        <td>Jun 29, 2026</td>
+                        <td><span class="badge badge--in-progress badge--table">12 scans</span></td>
+                        <td><a href="#" class="view-link">View</a> | <a href="#" class="view-link">Download</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

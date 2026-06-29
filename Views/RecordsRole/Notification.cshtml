@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Notifications - Records";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">SMS Notifications</h1>
+            <p class="page-header__subtitle">Records Officer - Notification history for my documents</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card__header">
+            <span class="card__title">My Notification History</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Tracking #</th>
+                        <th>Event</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jun 29, 2026 3:00 PM</td>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td><span class="badge badge--completed badge--table">Document Approved</span></td>
+                        <td>Your document has been approved by the Mayor</td>
+                        <td><span class="badge badge--completed badge--table">Sent</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

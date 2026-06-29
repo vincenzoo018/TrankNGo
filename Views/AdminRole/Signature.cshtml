@@ -1,0 +1,128 @@
+@{
+    ViewData["Title"] = "Digital Signatures - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Digital Signatures</h1>
+            <p class="page-header__subtitle">Executive Admin - Signature management and verification</p>
+        </div>
+    </div>
+
+    <!-- Signature Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number">45</div>
+            <div class="stat-card__label">Signatures This Month</div>
+            <div class="stat-card__sub">All users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">15</div>
+            <div class="stat-card__label">Mayor Signatures</div>
+            <div class="stat-card__sub">This month</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">30</div>
+            <div class="stat-card__label">Admin Signatures</div>
+            <div class="stat-card__sub">This month</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--success)">100%</div>
+            <div class="stat-card__label">Verification Rate</div>
+            <div class="stat-card__sub">All verified</div>
+        </div>
+    </div>
+
+    <!-- Signature Log -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Recent Digital Signatures</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Document #</th>
+                        <th>Document Type</th>
+                        <th>Signed By</th>
+                        <th>Action Type</th>
+                        <th>Remarks</th>
+                        <th>Verified</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jun 29, 2026 2:15 PM</td>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>Travel Order</td>
+                        <td>Hon. City Mayor</td>
+                        <td><span class="badge badge--completed badge--table">Approved</span></td>
+                        <td>Approved for processing</td>
+                        <td><span class="badge badge--completed badge--table">✓ Verified</span></td>
+                        <td><a href="#" class="view-link">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Jun 29, 2026 1:45 PM</td>
+                        <td><a href="#">TRK-2026-0144</a></td>
+                        <td>Leave Application</td>
+                        <td>System Administrator</td>
+                        <td><span class="badge badge--in-progress badge--table">Endorsed</span></td>
+                        <td>Forwarded to HRMO</td>
+                        <td><span class="badge badge--completed badge--table">✓ Verified</span></td>
+                        <td><a href="#" class="view-link">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Jun 29, 2026 12:30 PM</td>
+                        <td><a href="#">TRK-2026-0143</a></td>
+                        <td>Purchase Request</td>
+                        <td>Hon. City Mayor</td>
+                        <td><span class="badge badge--completed badge--table">Approved</span></td>
+                        <td>Budget allocation approved</td>
+                        <td><span class="badge badge--completed badge--table">✓ Verified</span></td>
+                        <td><a href="#" class="view-link">View</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Signature Management -->
+    <div class="card" style="margin-top:20px; max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">Signature Configuration (Admin Only)</span>
+        </div>
+        <div class="card__body">
+            <div class="alert alert--info" style="margin-bottom:16px;">
+                <strong>Note:</strong> As an administrator, you can manage signature settings for all users.
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Select User</label>
+                <select class="form-select">
+                    <option>Hon. City Mayor</option>
+                    <option>System Administrator</option>
+                    <option>Records Officer</option>
+                    <option>CART Oversight Officer</option>
+                </select>
+            </div>
+
+            <div style="margin-top:20px; padding:20px; border:2px dashed var(--border-gray); border-radius:8px; text-align:center;">
+                <svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--text-muted);margin-bottom:12px;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <p style="color:var(--text-muted);margin:0;">Current signature image not uploaded</p>
+                <button class="btn btn--primary btn--md" style="margin-top:12px;">Upload Signature</button>
+            </div>
+
+            <div style="margin-top:24px;">
+                <button class="btn btn--outline btn--md">Reset Signature</button>
+                <button class="btn btn--danger btn--md" style="margin-left:8px;">Revoke Signature Authority</button>
+            </div>
+        </div>
+    </div>
+</div>

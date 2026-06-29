@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "ARTA Compliance - Oversight";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">ARTA Compliance Monitoring</h1>
+            <p class="page-header__subtitle">Oversight Officer - Primary compliance dashboard and violation tracking</p>
+        </div>
+    </div>
+
+    <!-- Compliance Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--success);">96%</div>
+            <div class="stat-card__label">Compliance Rate</div>
+            <div class="stat-card__sub">Within ARTA deadlines</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--warning);">12</div>
+            <div class="stat-card__label">Warnings</div>
+            <div class="stat-card__sub">Approaching deadline</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number" style="color:var(--danger);">5</div>
+            <div class="stat-card__label">Violations</div>
+            <div class="stat-card__sub">Exceeded deadline</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">3.2</div>
+            <div class="stat-card__label">Avg Days</div>
+            <div class="stat-card__sub">Processing time</div>
+        </div>
+    </div>
+
+    <!-- Escalation Management -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Active Escalations</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tracking #</th>
+                        <th>Violating Office</th>
+                        <th>Escalation Level</th>
+                        <th>Days Overdue</th>
+                        <th>Escalated Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>City Budget Office</td>
+                        <td><span class="badge badge--danger badge--table">Critical</span></td>
+                        <td>8 days</td>
+                        <td>Jun 21, 2026</td>
+                        <td><span class="badge badge--warning badge--table">Unresolved</span></td>
+                        <td>
+                            <a href="#" class="view-link">Resolve</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">TRK-2026-0142</a></td>
+                        <td>HRMO</td>
+                        <td><span class="badge badge--danger badge--table">Overdue</span></td>
+                        <td>22 days</td>
+                        <td>Jun 07, 2026</td>
+                        <td><span class="badge badge--warning badge--table">Unresolved</span></td>
+                        <td>
+                            <a href="#" class="view-link">Resolve</a> |
+                            <a href="#" class="view-link">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Department Performance -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Department Compliance Report</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Total Documents</th>
+                        <th>On Time</th>
+                        <th>Warnings</th>
+                        <th>Violations</th>
+                        <th>Compliance %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Office of the Mayor</strong></td>
+                        <td>145</td>
+                        <td><span class="badge badge--completed badge--table">140</span></td>
+                        <td><span class="badge badge--warning badge--table">3</span></td>
+                        <td><span class="badge badge--danger badge--table">2</span></td>
+                        <td style="color:var(--success);font-weight:600;">96.5%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HRMO</strong></td>
+                        <td>89</td>
+                        <td><span class="badge badge--completed badge--table">87</span></td>
+                        <td><span class="badge badge--warning badge--table">2</span></td>
+                        <td><span class="badge badge--danger badge--table">0</span></td>
+                        <td style="color:var(--success);font-weight:600;">97.8%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>City Budget Office</strong></td>
+                        <td>67</td>
+                        <td><span class="badge badge--completed badge--table">60</span></td>
+                        <td><span class="badge badge--warning badge--table">5</span></td>
+                        <td><span class="badge badge--danger badge--table">2</span></td>
+                        <td style="color:var(--warning);font-weight:600;">89.6%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

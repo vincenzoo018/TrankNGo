@@ -1,0 +1,185 @@
+@{
+    ViewData["Title"] = "QR Tracking - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">QR Code Tracking</h1>
+            <p class="page-header__subtitle">Executive Admin - Full tracking system access</p>
+        </div>
+        <button class="btn btn--primary btn--md" onclick="openGenerateQRModal()">+ Generate New QR</button>
+    </div>
+
+    <!-- Tracking Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-card__number">1,234</div>
+            <div class="stat-card__label">QR Codes Generated</div>
+            <div class="stat-card__sub">All time</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">5,678</div>
+            <div class="stat-card__label">Total Scans</div>
+            <div class="stat-card__sub">All time</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">892</div>
+            <div class="stat-card__label">Active Tracking</div>
+            <div class="stat-card__sub">In progress documents</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">156</div>
+            <div class="stat-card__label">Scans Today</div>
+            <div class="stat-card__sub">Public portal</div>
+        </div>
+    </div>
+
+    <!-- QR Search -->
+    <div class="card" style="margin-top:20px; max-width:800px;">
+        <div class="card__header">
+            <span class="card__title">Search QR Code</span>
+        </div>
+        <div class="card__body">
+            <div style="display:flex; gap:12px;">
+                <input type="text" class="form-input" placeholder="Enter tracking number..." style="flex:1;" />
+                <button class="btn btn--primary btn--md">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent QR Activity -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Recent QR Code Activity</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tracking Number</th>
+                        <th>Document Type</th>
+                        <th>Generated Date</th>
+                        <th>Scan Count</th>
+                        <th>Last Scanned</th>
+                        <th>QR Preview</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>Travel Order</td>
+                        <td>Jun 29, 2026</td>
+                        <td><span class="badge badge--in-progress badge--table">12 scans</span></td>
+                        <td>2 hours ago</td>
+                        <td>
+                            <svg viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="3" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="14" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="3" y="14" width="7" height="7" rx="1" fill="#0F2A6B"/></svg>
+                        </td>
+                        <td>
+                            <a href="#" class="view-link">View</a> |
+                            <a href="#" class="view-link">Download</a> |
+                            <a href="#" class="view-link">Print</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">TRK-2026-0144</a></td>
+                        <td>Leave Application</td>
+                        <td>Jun 29, 2026</td>
+                        <td><span class="badge badge--in-progress badge--table">8 scans</span></td>
+                        <td>4 hours ago</td>
+                        <td>
+                            <svg viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="3" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="14" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="3" y="14" width="7" height="7" rx="1" fill="#0F2A6B"/></svg>
+                        </td>
+                        <td>
+                            <a href="#" class="view-link">View</a> |
+                            <a href="#" class="view-link">Download</a> |
+                            <a href="#" class="view-link">Print</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">TRK-2026-0143</a></td>
+                        <td>Purchase Request</td>
+                        <td>Jun 28, 2026</td>
+                        <td><span class="badge badge--in-progress badge--table">15 scans</span></td>
+                        <td>1 day ago</td>
+                        <td>
+                            <svg viewBox="0 0 24 24" style="width:24px;height:24px;"><rect x="3" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="14" y="3" width="7" height="7" rx="1" fill="#0F2A6B"/><rect x="3" y="14" width="7" height="7" rx="1" fill="#0F2A6B"/></svg>
+                        </td>
+                        <td>
+                            <a href="#" class="view-link">View</a> |
+                            <a href="#" class="view-link">Download</a> |
+                            <a href="#" class="view-link">Print</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- QR Configuration (Admin) -->
+    <div class="card" style="margin-top:20px; max-width:600px;">
+        <div class="card__header">
+            <span class="card__title">QR Code Configuration</span>
+        </div>
+        <div class="card__body">
+            <div class="alert alert--info" style="margin-bottom:16px;">
+                <strong>Admin Settings:</strong> Configure QR code generation and tracking URL.
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Public Tracking URL</label>
+                <input type="text" class="form-input" value="https://track.mati.gov.ph" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">QR Code Size</label>
+                <select class="form-select">
+                    <option>Small (200x200px)</option>
+                    <option selected>Medium (300x300px)</option>
+                    <option>Large (500x500px)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="display:flex;gap:12px;align-items:center;">
+                <input type="checkbox" checked style="width:16px;height:16px;" id="chkLogo" />
+                <label for="chkLogo" style="font-size:13px;font-weight:500;">Include City Logo in QR Code</label>
+            </div>
+
+            <button class="btn btn--primary btn--md">Save Configuration</button>
+        </div>
+    </div>
+</div>
+
+<!-- Generate QR Modal -->
+<div class="modal-overlay" id="generateQRModal">
+    <div class="qr-modal" style="width: 500px;">
+        <div class="qr-modal__header" style="background:#0F2A6B;">
+            <span class="qr-modal__header-title">Generate QR Code</span>
+            <span class="qr-modal__close" onclick="closeGenerateQRModal()">&times;</span>
+        </div>
+        <div class="qr-modal__body" style="text-align:left;">
+            <div class="form-group">
+                <label class="form-label">Select Document</label>
+                <select class="form-select">
+                    <option>TRK-2026-0145 - Travel Order</option>
+                    <option>TRK-2026-0144 - Leave Application</option>
+                    <option>TRK-2026-0143 - Purchase Request</option>
+                </select>
+            </div>
+            <button class="btn btn--primary btn--full btn--md">Generate QR Code</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openGenerateQRModal() {
+            document.getElementById('generateQRModal').classList.add('active');
+        }
+        function closeGenerateQRModal() {
+            document.getElementById('generateQRModal').classList.remove('active');
+        }
+    </script>
+}

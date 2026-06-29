@@ -1,0 +1,142 @@
+@model TrackNGo.ViewModels.DocumentListViewModel
+@{
+    ViewData["Title"] = "All Documents - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">All Documents</h1>
+            <p class="page-header__subtitle">@Model.TotalCount total records | Executive Admin View</p>
+        </div>
+        <a href="/Document/Create?role=admin" class="btn btn--primary btn--md" style="text-decoration:none;">
+            + Submit New Document
+        </a>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+        <form method="get" action="/Document/Index" style="display:flex; gap:12px; width:100%; align-items:center; flex-wrap:wrap;">
+            <input type="hidden" name="role" value="admin" />
+            <div class="search-input-wrap" style="flex:1; min-width:250px;">
+                <input type="text" class="form-input" name="search" value="@Model.SearchQuery"
+                       placeholder="Search by tracking number, type, or name..." />
+            </div>
+            <select class="form-select" name="status" style="width:180px;">
+                <option value="">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Endorsed">Endorsed</option>
+                <option value="UnderReview">Under Review</option>
+                <option value="ForApproval">For Approval</option>
+                <option value="Approved">Approved</option>
+                <option value="Completed">Completed</option>
+                <option value="Returned">Returned</option>
+                <option value="Escalated">Escalated</option>
+            </select>
+            <select class="form-select" name="department" style="width:180px;">
+                <option value="">All Departments</option>
+                <option>Office of the Mayor</option>
+                <option>HRMO</option>
+                <option>Records Division</option>
+            </select>
+            <button type="submit" class="btn btn--primary btn--md">Search</button>
+            <a href="/Admin/Audit?role=admin" class="btn btn--outline btn--md">View Audit Log</a>
+        </form>
+    </div>
+
+    <!-- Admin Alert Box -->
+    <div style="padding:0 24px;">
+        <div class="alert alert--info" style="margin-bottom:16px;">
+            <strong>Admin Access:</strong> You have full visibility of all documents across all departments. Use filters to narrow your search.
+        </div>
+    </div>
+
+    <!-- Document Table -->
+    <div style="padding:0 24px 24px;">
+        <div class="card" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border-light); text-align: left;">
+                        <th style="padding: 16px 20px; font-weight: 700;">Ref No.</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Document Type</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Submitted By</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Department</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Date Filed</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Progress</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Status</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Documents.Any())
+                    {
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                No documents found matching your search criteria.
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var doc in Model.Documents)
+                    {
+                        var statusClass = doc.Status switch
+                        {
+                            TrackNGo.Models.DocumentStatus.Completed => "badge--completed",
+                            TrackNGo.Models.DocumentStatus.Returned => "badge--returned",
+                            TrackNGo.Models.DocumentStatus.Rejected => "badge--rejected",
+                            TrackNGo.Models.DocumentStatus.Escalated => "badge--danger",
+                            TrackNGo.Models.DocumentStatus.ForApproval => "badge--warning",
+                            _ => "badge--in-progress"
+                        };
+                        
+                        <tr style="border-bottom: 1px solid var(--border-light);">
+                            <td style="padding: 16px 20px; color: var(--blue); font-weight: 600;">
+                                <a href="/Document/ViewDocument/@doc.Id?role=admin">@doc.TrackingNumber</a>
+                            </td>
+                            <td style="padding: 16px 20px;">@doc.DocumentType</td>
+                            <td style="padding: 16px 20px;">@doc.SubmittedBy</td>
+                            <td style="padding: 16px 20px;">@doc.Department</td>
+                            <td style="padding: 16px 20px;">@doc.DateFiled.ToString("MMM dd, yyyy")</td>
+                            <td style="padding: 16px 20px;">
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    @for (int i = 1; i <= doc.TotalSteps; i++)
+                                    {
+                                        if (i <= doc.CurrentStep)
+                                        {
+                                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--blue);"></div>
+                                        }
+                                        else
+                                        {
+                                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--border-gray);"></div>
+                                        }
+                                    }
+                                    <span style="margin-left: 6px; font-size: 11px;">@doc.CurrentStep/@doc.TotalSteps</span>
+                                </div>
+                            </td>
+                            <td style="padding: 16px 20px;">
+                                <span class="badge badge--table @statusClass">@doc.StatusText</span>
+                            </td>
+                            <td style="padding: 16px 20px;">
+                                <a href="/Document/ViewDocument/@doc.Id?role=admin" class="btn btn--sm btn--primary">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <div style="display:flex; justify-content:center; gap:8px; padding:16px 24px;">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <a href="/Document/Index?page=@i&search=@Model.SearchQuery&status=@Model.FilterStatus&role=admin"
+                   class="btn @(i == Model.PageNumber ? "btn--primary" : "btn--outline") btn--sm"
+                   style="text-decoration:none; min-width:36px; text-align:center;">@i</a>
+            }
+        </div>
+    }
+</div>

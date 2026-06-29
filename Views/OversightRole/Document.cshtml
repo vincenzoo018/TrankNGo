@@ -1,0 +1,54 @@
+@model TrackNGo.ViewModels.DocumentListViewModel
+@{
+    ViewData["Title"] = "All Documents - Oversight";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">All Documents</h1>
+            <p class="page-header__subtitle">Oversight Officer - Complete document visibility for compliance monitoring</p>
+        </div>
+    </div>
+
+    <div style="padding:0 24px;">
+        <div class="alert alert--info">
+            <strong>Oversight Access:</strong> You have full visibility of all documents for ARTA compliance monitoring and reporting.
+        </div>
+    </div>
+
+    <div style="padding:0 24px 24px;">
+        <div class="card" style="overflow-x: auto; margin-top:16px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border-light); text-align: left;">
+                        <th style="padding: 16px 20px;">Tracking #</th>
+                        <th style="padding: 16px 20px;">Type</th>
+                        <th style="padding: 16px 20px;">Department</th>
+                        <th style="padding: 16px 20px;">Date Filed</th>
+                        <th style="padding: 16px 20px;">Days Elapsed</th>
+                        <th style="padding: 16px 20px;">Status</th>
+                        <th style="padding: 16px 20px;">Compliance</th>
+                        <th style="padding: 16px 20px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <tr style="border-bottom: 1px solid var(--border-light);">
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=oversight">@doc.TrackingNumber</a></td>
+                            <td style="padding: 16px 20px;">@doc.DocumentType</td>
+                            <td style="padding: 16px 20px;">@doc.Department</td>
+                            <td style="padding: 16px 20px;">@doc.DateFiled.ToString("MMM dd, yyyy")</td>
+                            <td style="padding: 16px 20px;">@((DateTime.Now - doc.DateFiled).Days) days</td>
+                            <td style="padding: 16px 20px;"><span class="badge badge--in-progress badge--table">@doc.StatusText</span></td>
+                            <td style="padding: 16px 20px;"><span class="badge badge--completed badge--table">On Time</span></td>
+                            <td style="padding: 16px 20px;"><a href="/Document/ViewDocument/@doc.Id?role=oversight" class="btn btn--sm btn--primary">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

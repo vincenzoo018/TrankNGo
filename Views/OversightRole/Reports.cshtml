@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Reports & Export - Oversight";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Reports & Data Export</h1>
+            <p class="page-header__subtitle">Oversight Officer - Generate compliance reports and export data</p>
+        </div>
+    </div>
+
+    <!-- Report Generation -->
+    <div class="card" style="max-width:700px;">
+        <div class="card__header">
+            <span class="card__title">Generate Report</span>
+        </div>
+        <div class="card__body">
+            <div class="form-group">
+                <label class="form-label">Report Type</label>
+                <select class="form-select">
+                    <option>ARTA Compliance Report</option>
+                    <option>Department Performance Report</option>
+                    <option>Escalation Summary Report</option>
+                    <option>Document Processing Report</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date From</label>
+                <input type="date" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date To</label>
+                <input type="date" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Export Format</label>
+                <select class="form-select">
+                    <option>PDF</option>
+                    <option>Excel (XLSX)</option>
+                    <option>CSV</option>
+                </select>
+            </div>
+            <button class="btn btn--primary btn--md">Generate Report</button>
+        </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Recent Reports</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Report Name</th>
+                        <th>Generated Date</th>
+                        <th>Date Range</th>
+                        <th>Format</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ARTA Compliance Report</td>
+                        <td>Jun 29, 2026 3:00 PM</td>
+                        <td>Jun 01 - Jun 29, 2026</td>
+                        <td><span class="badge badge--pending badge--table">PDF</span></td>
+                        <td><a href="#" class="view-link">Download</a></td>
+                    </tr>
+                    <tr>
+                        <td>Department Performance Report</td>
+                        <td>Jun 28, 2026 2:00 PM</td>
+                        <td>May 01 - May 31, 2026</td>
+                        <td><span class="badge badge--completed badge--table">Excel</span></td>
+                        <td><a href="#" class="view-link">Download</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

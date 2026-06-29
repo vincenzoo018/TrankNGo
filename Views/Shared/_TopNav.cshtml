@@ -1,0 +1,66 @@
+<!-- ZONE A — TOP NAVIGATION BAR -->
+<nav class="top-nav" id="topNavBar">
+    <!-- Hamburger Toggle (mobile) -->
+    <button class="top-nav__hamburger" id="sidebarToggle" onclick="toggleSidebar()" title="Menu">
+        <svg viewBox="0 0 24 24" width="20" height="20"><line x1="3" y1="6" x2="21" y2="6" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="21" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <ul class="top-nav__links">
+        <li><a href="#">Quick Links</a></li>
+        <li><a href="#">Quality Assurance</a></li>
+        <li><a href="#">Support</a></li>
+    </ul>
+    <div class="top-nav__icons">
+        <!-- Bell -->
+        <div style="position:relative;">
+            <button class="top-nav__icon-btn" id="navBell" title="Notifications" onclick="document.getElementById('notifDropdown').style.display = document.getElementById('notifDropdown').style.display === 'flex' ? 'none' : 'flex'; event.stopPropagation();">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span style="position:absolute;top:2px;right:2px;background:#DC2626;color:white;font-size:9px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;">2</span>
+            </button>
+            <div id="notifDropdown" style="position:absolute;top:40px;right:0;width:280px;background:white;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:none;flex-direction:column;z-index:4000;overflow:hidden;text-align:left;">
+                <div style="padding:12px 16px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:13px;font-weight:700;color:#1E293B;display:flex;justify-content:space-between;">
+                    Notifications <span style="color:#1A56DB;font-size:11px;cursor:pointer;">Mark all read</span>
+                </div>
+                <div style="padding:12px 16px;border-bottom:1px solid #E2E8F0;cursor:pointer;background:#F1F5F9;">
+                    <div style="font-size:12px;font-weight:600;color:#1E293B;">Document Approved</div>
+                    <div style="font-size:11px;color:#64748B;line-height:1.4;">TNG-2026-0312 was approved by JMC Heads.</div>
+                    <div style="font-size:10px;color:#94A3B8;margin-top:4px;">10 mins ago</div>
+                </div>
+                <div style="padding:12px 16px;cursor:pointer;background:#F1F5F9;">
+                    <div style="font-size:12px;font-weight:600;color:#1E293B;">Document Returned</div>
+                    <div style="font-size:11px;color:#64748B;line-height:1.4;">TNG-2026-0247 requires missing attachments.</div>
+                    <div style="font-size:10px;color:#94A3B8;margin-top:4px;">1 hour ago</div>
+                </div>
+            </div>
+        </div>
+        <!-- Star -->
+        <button class="top-nav__icon-btn" id="navStar" title="Favorites">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+        <!-- Flag -->
+        <button class="top-nav__icon-btn" id="navFlag" title="Flagged">
+            <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </button>
+        <!-- User -->
+        <button class="top-nav__icon-btn" id="navUser" title="Profile">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <!-- Settings -->
+        <button class="top-nav__icon-btn" id="navSettings" title="Settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+        <!-- Logout -->
+        <a href="/Auth/Login" class="top-nav__icon-btn" id="navLogout" title="Logout">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </a>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('notifDropdown');
+        if (dropdown && dropdown.style.display === 'flex' && !e.target.closest('#navBell') && !e.target.closest('#notifDropdown')) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>

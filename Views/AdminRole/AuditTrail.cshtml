@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Audit Trail - Admin";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Audit Trail</h1>
+            <p class="page-header__subtitle">Executive Admin - Complete system activity log</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card__header">
+            <span class="card__title">System Activity Log</span>
+        </div>
+        <div class="card__body" style="padding:0; overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Document #</th>
+                        <th>Details</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jun 29, 2026 4:35 PM</td>
+                        <td>admin</td>
+                        <td><span class="badge badge--in-progress badge--table">Document Endorsed</span></td>
+                        <td><a href="#">TRK-2026-0145</a></td>
+                        <td>Forwarded to HRMO</td>
+                        <td>192.168.1.100</td>
+                    </tr>
+                    <tr>
+                        <td>Jun 29, 2026 4:30 PM</td>
+                        <td>mayor</td>
+                        <td><span class="badge badge--completed badge--table">Document Approved</span></td>
+                        <td><a href="#">TRK-2026-0144</a></td>
+                        <td>Digital signature applied</td>
+                        <td>192.168.1.101</td>
+                    </tr>
+                    <tr>
+                        <td>Jun 29, 2026 4:20 PM</td>
+                        <td>records</td>
+                        <td><span class="badge badge--pending badge--table">Document Created</span></td>
+                        <td><a href="#">TRK-2026-0146</a></td>
+                        <td>New travel order submitted</td>
+                        <td>192.168.1.102</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

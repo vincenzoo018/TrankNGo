@@ -1,0 +1,107 @@
+@model TrackNGo.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Records Dashboard";
+    Layout = "~/Views/Shared/_LayoutApp.cshtml";
+}
+
+<div class="page-body">
+    <div class="page-header">
+        <div>
+            <h1 class="page-header__title">Records Officer Dashboard</h1>
+            <p class="page-header__subtitle">Welcome, @Model.UserFullName - Document Management</p>
+        </div>
+    </div>
+
+    <!-- Records Officer Stat Cards -->
+    <div class="stats-row">
+        <div class="stat-card stat-card--primary" style="border-left: 4px solid #0D9488;">
+            <div class="stat-card__number" style="color:#0D9488;">@Model.ReceivedTodayCount</div>
+            <div class="stat-card__label">Received Today</div>
+            <div class="stat-card__sub">New intakes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">@Model.AwaitingResubmissionCount</div>
+            <div class="stat-card__label">Awaiting Resubmission</div>
+            <div class="stat-card__sub">Returned documents</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">@Model.CompletedCount</div>
+            <div class="stat-card__label">Ready for Release</div>
+            <div class="stat-card__sub">Approved documents</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card__number">@Model.TotalDocuments</div>
+            <div class="stat-card__label">My Documents</div>
+            <div class="stat-card__sub">Created by me</div>
+        </div>
+    </div>
+
+    <!-- Records View Alert -->
+    <div style="padding:0 24px;">
+        <div class="alert alert--info" style="margin-top:20px;">
+            <strong>Records View:</strong> You can see and manage documents you have created or received. Use Document Intake to submit new documents.
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">Quick Actions</span>
+        </div>
+        <div class="card__body">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
+                <a href="/Document/Create?role=records" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    <span>Submit New Document</span>
+                </a>
+                <a href="/Tracking/Index?role=records" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                    <span>Track via QR</span>
+                </a>
+                <a href="/Notification/Index?role=records" class="quick-action-btn" style="text-decoration:none;">
+                    <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:currentColor;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>SMS Notifications</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card" style="margin-top:20px;">
+        <div class="card__header">
+            <span class="card__title">My Recent Activity</span>
+        </div>
+        <div class="card__body">
+            <ul style="list-style:none; padding:0;">
+                @foreach (var act in Model.RecentActivity)
+                {
+                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <strong>@act.TrackingNumber</strong> — @act.Action
+                        <span style="color:#888; font-size:12px; float:right;">@act.TimeAgo</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+            border: 2px dashed var(--border-gray);
+            border-radius: 8px;
+            color: var(--text-body);
+            transition: all 0.2s;
+        }
+        .quick-action-btn:hover {
+            border-color: #0D9488;
+            color: #0D9488;
+            background: #F0FDFA;
+        }
+    </style>
+}

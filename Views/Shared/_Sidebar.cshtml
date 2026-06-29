@@ -1,0 +1,259 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString()?.ToLower() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString()?.ToLower() ?? "";
+    
+    // Role resolution: check query param (for demo), then claims (for real auth)
+    var queryRole = Context.Request.Query["role"].ToString();
+    TrackNGo.Models.UserRole role;
+    
+    if (!string.IsNullOrEmpty(queryRole))
+    {
+        role = queryRole.ToLower() switch
+        {
+            "mayor" => TrackNGo.Models.UserRole.Mayor,
+            "records" => TrackNGo.Models.UserRole.RecordsOfficer,
+            "cart" => TrackNGo.Models.UserRole.OversightOfficer,
+            "oversight" => TrackNGo.Models.UserRole.OversightOfficer,
+            "admin" => TrackNGo.Models.UserRole.ExecutiveAdmin,
+            _ => TrackNGo.Models.UserRole.ExecutiveAdmin
+        };
+    }
+    else
+    {
+        // Try to get role from claims - stored as string name, not int
+        var userRoleStr = Context.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
+        if (!string.IsNullOrEmpty(userRoleStr) && Enum.TryParse<TrackNGo.Models.UserRole>(userRoleStr, out var parsedRole))
+        {
+            role = parsedRole;
+        }
+        else
+        {
+            // Fallback to ExecutiveAdmin if no valid role found
+            role = TrackNGo.Models.UserRole.ExecutiveAdmin;
+        }
+    }
+    
+    // Pass role to all links as query param so it persists during demo navigation
+    var roleParam = !string.IsNullOrEmpty(queryRole) ? queryRole : role.ToString().ToLower();
+}
+
+<!-- SIDEBAR NAVIGATION -->
+<aside class="sidebar" id="sidebar">
+    <!-- Brand -->
+    <div class="sidebar__brand">
+        <div class="sidebar__logo">
+            <svg viewBox="0 0 36 36" width="32" height="32">
+                <rect x="5" y="3" width="20" height="26" rx="2" stroke="white" stroke-width="1.5" fill="none"/>
+                <line x1="10" y1="10" x2="20" y2="10" stroke="white" stroke-width="1.5"/>
+                <line x1="10" y1="14" x2="20" y2="14" stroke="white" stroke-width="1.5"/>
+                <line x1="10" y1="18" x2="16" y2="18" stroke="white" stroke-width="1.5"/>
+                <circle cx="26" cy="25" r="7" stroke="white" stroke-width="1.5" fill="none"/>
+                <polyline points="23,25 25.5,27.5 29,23" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="sidebar__brand-text">
+            <span class="sidebar__brand-name">TrackNGo</span>
+            <span class="sidebar__brand-sub">Mati City</span>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="sidebar__divider"></div>
+
+    <!-- Navigation Links -->
+    <nav class="sidebar__nav" id="sidebarNav">
+        
+        <!-- ========================================
+             DASHBOARD - ALL ROLES
+        ========================================= -->
+        <a href="/Dashboard/Index?role=@roleParam" class="sidebar__link @(currentController == "dashboard" ? "sidebar__link--active" : "")" id="sidebarDashboard">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Dashboard</span>
+        </a>
+
+        <!-- ========================================
+             DOCUMENT LIST - ALL ROLES
+        ========================================= -->
+        <a href="/Document/Index?role=@roleParam" class="sidebar__link @(currentController == "document" && currentAction == "index" ? "sidebar__link--active" : "")" id="sidebarDocuments">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>All Documents</span>
+        </a>
+
+        <!-- ========================================
+             DOCUMENT INTAKE - Executive Admin & Records Officer
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.ExecutiveAdmin || role == TrackNGo.Models.UserRole.RecordsOfficer)
+        {
+            <a href="/Document/Create?role=@roleParam" class="sidebar__link @(currentController == "document" && currentAction == "create" ? "sidebar__link--active" : "")" id="sidebarIntake">
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span>Document Intake</span>
+            </a>
+        }
+
+        <!-- ========================================
+             WORKFLOW ROUTING - Mayor & Executive Admin
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.Mayor || role == TrackNGo.Models.UserRole.ExecutiveAdmin)
+        {
+            <a href="/Workflow/Index?role=@roleParam" class="sidebar__link @(currentController == "workflow" ? "sidebar__link--active" : "")" id="sidebarWorkflow">
+                <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                <span>Workflow Routing</span>
+            </a>
+        }
+
+        <!-- ========================================
+             QR TRACKING - Mayor & Records Officer
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.Mayor || role == TrackNGo.Models.UserRole.RecordsOfficer)
+        {
+            <a href="/Tracking/Index?role=@roleParam" class="sidebar__link @(currentController == "tracking" ? "sidebar__link--active" : "")" id="sidebarTracking">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="18" y="18" width="3" height="3" rx="0.5"/><rect x="14" y="18" width="3" height="3" rx="0.5" opacity="0.5"/><rect x="18" y="14" width="3" height="3" rx="0.5" opacity="0.5"/></svg>
+                <span>QR Tracking</span>
+            </a>
+        }
+
+        <!-- ========================================
+             DIGITAL SIGNATURE - Mayor ONLY (EXCLUSIVE)
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.Mayor)
+        {
+            <a href="/Signature/Index?role=@roleParam" class="sidebar__link @(currentController == "signature" ? "sidebar__link--active" : "")" id="sidebarSignature">
+                <svg viewBox="0 0 24 24"><path d="M12 2 L2 7 L2 12 C2 17 7 21 12 22 C17 21 22 17 22 12 L22 7 Z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M9 12 L11 14 L15 10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Digital Signature</span>
+            </a>
+        }
+
+        <!-- ========================================
+             SMS NOTIFICATIONS - Records Officer, Oversight, Executive Admin
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.RecordsOfficer || role == TrackNGo.Models.UserRole.OversightOfficer || role == TrackNGo.Models.UserRole.ExecutiveAdmin)
+        {
+            <a href="/Notification/Index?role=@roleParam" class="sidebar__link @(currentController == "notification" ? "sidebar__link--active" : "")" id="sidebarNotification">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>SMS Notifications</span>
+            </a>
+        }
+
+        <!-- ========================================
+             ARTA COMPLIANCE - Mayor, Executive Admin, Oversight Officer
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.Mayor || role == TrackNGo.Models.UserRole.ExecutiveAdmin || role == TrackNGo.Models.UserRole.OversightOfficer)
+        {
+            <a href="/Oversight/Index?role=@roleParam" class="sidebar__link @(currentController == "oversight" && currentAction == "index" ? "sidebar__link--active" : "")" id="sidebarARTA">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 6 V12 L16 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                <span>ARTA Compliance</span>
+            </a>
+        }
+
+        <!-- ========================================
+             REPORTS & EXPORT - Oversight Officer ONLY
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.OversightOfficer)
+        {
+            <a href="/Oversight/Reports?role=@roleParam" class="sidebar__link @(currentController == "oversight" && currentAction == "reports" ? "sidebar__link--active" : "")" id="sidebarReports">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h6M9 18h6M9 12h1"/></svg>
+                <span>Reports & Export</span>
+            </a>
+        }
+
+        <!-- ========================================
+             USER MANAGEMENT - Executive Admin & Oversight Officer
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.ExecutiveAdmin || role == TrackNGo.Models.UserRole.OversightOfficer)
+        {
+            <a href="/Admin/Index?role=@roleParam" class="sidebar__link @(currentController == "admin" && currentAction == "index" ? "sidebar__link--active" : "")" id="sidebarAdmin">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/><path d="M3 21 C3 17 7 14 12 14 C17 14 21 17 21 21" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="18" cy="18" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="18" y1="16.5" x2="18" y2="19.5" stroke="currentColor" stroke-width="1.5"/><line x1="16.5" y1="18" x2="19.5" y2="18" stroke="currentColor" stroke-width="1.5"/></svg>
+                <span>User Management</span>
+            </a>
+        }
+
+        <!-- ========================================
+             SYSTEM CONFIGURATION - Executive Admin ONLY
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.ExecutiveAdmin)
+        {
+            <a href="/Admin/Index?role=@roleParam" class="sidebar__link @(currentController == "admin" && currentAction == "index" ? "sidebar__link--active" : "")" id="sidebarConfig">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                <span>System Configuration</span>
+            </a>
+        }
+        
+        <!-- ========================================
+             AUDIT TRAIL - Executive Admin & Oversight Officer
+        ========================================= -->
+        @if (role == TrackNGo.Models.UserRole.ExecutiveAdmin || role == TrackNGo.Models.UserRole.OversightOfficer)
+        {
+            <a href="/Admin/Audit?role=@roleParam" class="sidebar__link @(currentController == "admin" && currentAction == "audit" ? "sidebar__link--active" : "")" id="sidebarAudit">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" fill="none"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="14" r="2" fill="currentColor"/><path d="M12 16v2M12 10v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span>Audit Trail</span>
+            </a>
+        }
+
+    </nav>
+
+    <!-- Divider -->
+    <div class="sidebar__divider"></div>
+
+    <!-- Bottom section -->
+    <div class="sidebar__footer">
+        <a href="/Auth/Logout" class="sidebar__link" id="sidebarLogout">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Logout</span>
+        </a>
+    </div>
+</aside>
+
+<!-- Sidebar Overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+
+@* 
+========================================
+ROLE-BASED SIDEBAR MODULE ACCESS SUMMARY
+========================================
+
+Based on ROLE_PROCESS_GUIDE.md
+
+MAYOR (UserRole.Mayor = 1)
+├── Dashboard
+├── All Documents
+├── Workflow Routing
+├── QR Tracking
+├── Digital Signature (EXCLUSIVE)
+├── SMS Notifications
+└── ARTA Compliance
+
+EXECUTIVE ADMIN (UserRole.ExecutiveAdmin = 2)
+├── Dashboard
+├── All Documents
+├── Document Intake
+├── Workflow Routing
+├── SMS Notifications
+├── ARTA Compliance
+├── User Management
+├── System Configuration
+└── Audit Trail
+
+RECORDS OFFICER (UserRole.RecordsOfficer = 3)
+├── Dashboard
+├── All Documents
+├── Document Intake
+├── QR Tracking
+└── SMS Notifications
+
+OVERSIGHT OFFICER (UserRole.OversightOfficer = 4)
+├── Dashboard
+├── All Documents
+├── SMS Notifications
+├── ARTA Compliance
+├── Reports & Export (EXCLUSIVE)
+├── User Management
+└── Audit Trail
+
+========================================
+MODULE EXCLUSIVITY NOTES:
+- Digital Signature: ONLY Mayor
+- Reports & Export: ONLY Oversight Officer
+- System Configuration: ONLY Executive Admin
+========================================
+*@
